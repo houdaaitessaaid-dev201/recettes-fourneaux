@@ -1,20 +1,11 @@
-/* ===============================
-   VARIABLES
-================================ */
+/* Variables de couleurs */
 :root {
-  --pink-main: #f0c9da;
+  --pink-main: #eaafc8;
   --pink-soft: #ffffff;
   --cream: #fffaf5;
-  --brown: #5c3a21;
-  --orange-soft: #f9c5ed;
+  --brown: #77573f;
+  --orange-soft: #af7797;
   --white: #ffffff;
-}
-
-/* ===============================
-   GLOBAL
-================================ */
-* {
-  box-sizing: border-box;
 }
 
 body {
@@ -22,6 +13,7 @@ body {
   font-family: "Poppins", sans-serif;
   margin: 0;
   color: #333;
+
 }
 
 h1, h2, h3 {
@@ -29,9 +21,7 @@ h1, h2, h3 {
   color: var(--brown);
 }
 
-/* ===============================
-   NAVBAR
-================================ */
+/* --- NAVBAR --- */
 .navbar {
   background: var(--white);
   padding: 10px 50px;
@@ -48,8 +38,6 @@ h1, h2, h3 {
   display: flex;
   list-style: none;
   gap: 25px;
-  padding: 0;
-  margin: 0;
 }
 
 .nav-links a {
@@ -77,18 +65,13 @@ h1, h2, h3 {
   background: white;
 }
 
-/* ===============================
-   HERO
-================================ */
+/* --- HERO & GRID --- */
 .hero {
   text-align: center;
-  padding: 60px 20px;
-  background: var(--cream);
+  padding: 20px 20px;
+  background: rgb(251, 238, 227);
 }
 
-/* ===============================
-   GRID
-================================ */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -98,9 +81,7 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 
-/* ===============================
-   CARDS
-================================ */
+/* --- CARDS (Home) --- */
 .card {
   background: var(--white);
   border-radius: 20px;
@@ -121,9 +102,7 @@ h1, h2, h3 {
   border-radius: 15px;
 }
 
-/* ===============================
-   BUTTONS
-================================ */
+/* --- BOUTONS --- */
 .btn-main {
   background: var(--pink-main);
   border: none;
@@ -139,9 +118,7 @@ h1, h2, h3 {
   background: var(--orange-soft);
 }
 
-/* ===============================
-   DETAIL PAGE
-================================ */
+/* --- PAGE DETAIL --- */
 .detail-container {
   max-width: 1000px;
   margin: 30px auto;
@@ -190,70 +167,67 @@ h1, h2, h3 {
   display: inline-block;
   margin-top: 10px;
 }
-
-/* ===============================
-   RESPONSIVE - SMARTPHONE
-================================ */
-@media (max-width: 768px) {
-
-  .navbar {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .search-input {
-    width: 100%;
-  }
-
-  .grid {
-    padding: 20px;
-    gap: 20px;
-  }
-
-  .detail-header {
-    flex-direction: column;
-    padding: 20px;
-    text-align: center;
-  }
-
-  .detail-img {
-    width: 100%;
-    height: auto;
-  }
-
-  .detail-content {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
+.card {
+  position: relative;
+}
+.heart-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.3s;
 }
 
-/* ===============================
-   RESPONSIVE - TABLETTE
-================================ */
-@media (min-width: 768px) and (max-width: 1024px) {
-
-  .navbar {
-    padding: 10px 30px;
-  }
-
-  .detail-header {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .detail-img {
-    width: 300px;
-    height: 300px;
-  }
-
-  .detail-content {
-    grid-template-columns: 1fr;
-  }
+.card {
+  position: relative;
 }
+.fav-btn{
+  position: relative;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.fav-count{
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #f06292;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+/* Notification message pour Add Liste */
+.notification {
+  position: fixed;
+  top: 20px;          /* فوق الصفحة */
+  right: 20px;        /* على اليمين */
+  background-color: #4caf50;  /* أخضر واضح */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+  font-weight: bold;
+  font-size: 14px;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s; /* يبان ويختفي بعد 3 ثواني */
+}
+
+/* Animation fadein */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation fadeout */
+@keyframes fadeout {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
