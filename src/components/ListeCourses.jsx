@@ -7,21 +7,32 @@ export default function ListeCourses() {
   const dispatch = useDispatch();
 
   if (items.length === 0) {
-    return <h2 style={{ textAlign: "center", marginTop: "50px" }}>
-      Liste de courses vide 🛒
-    </h2>;
+    return (
+      <div className="empty-cart">
+        <h2>🛒 Liste de courses vide</h2>
+        <p>Ajoutez des ingrédients depuis vos recettes ✨</p>
+      </div>
+    );
   }
 
   return (
-    <div className="detail-container">
-      <h1>🛒 Liste de courses</h1>
+    <div className="courses-container">
+      <h1 className="courses-title">
+        🛒 Ma liste de courses
+      </h1>
 
-      <ul style={{ marginTop: "20px" }}>
+      <ul className="courses-list">
         {items.map((i, index) => (
-          <li key={index} style={{ marginBottom: "10px" }}>
-            {i.name} <small>({i.measure})</small>
+          <li key={index} className="course-item">
+            <div>
+              <span className="ingredient-name">{i.name}</span>
+              <small className="ingredient-measure">
+                {i.measure}
+              </small>
+            </div>
+
             <button
-              style={{ marginLeft: "10px" }}
+              className="remove-btn"
               onClick={() => dispatch(removeIngredient(i.name))}
             >
               ❌
@@ -30,8 +41,8 @@ export default function ListeCourses() {
         ))}
       </ul>
 
-      <button className="btn-main" onClick={() => dispatch(clearList())}>
-        Vider la liste
+      <button className="btn-clear" onClick={() => dispatch(clearList())}>
+        Vider la liste 🗑️
       </button>
     </div>
   );

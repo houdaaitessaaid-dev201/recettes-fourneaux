@@ -20,6 +20,7 @@ const courseSlice = createSlice({
     clearList: (state) => {
       state.items = [];
     }
+    
   }
 });
 

@@ -1,23 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import "../App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../redux/favoritesSlice";
-import { FaHeart } from "react-icons/fa";
 import { addIngredients } from "../redux/courseSlice";
+import { FaHeart } from "react-icons/fa";
+import { purchaseMeal } from "../redux/premiumSlice";
+import foodVideo from "../assets/food.mp4";
 
-export default function Home() {
+export default function Home({ search, setSearch }) {
   const [recipes, setRecipes] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [msg, setMsg] = useState(""); // 🟢 state للرسالة
+  const [msg, setMsg] = useState("");
 
   const dispatch = useDispatch();
   const favorites = useSelector(state => state.favorites.items);
+  const purchasedMeals = useSelector(state => state.premium.purchasedMeals);
   const navigate = useNavigate();
 
-  // Fetch recipes
   useEffect(() => {
     const fetchAllRecipes = async () => {
       setLoading(true);
@@ -34,7 +34,7 @@ export default function Home() {
           .flat();
         setRecipes(allMeals);
       } catch (err) {
-        console.error("Erreur API:", err);
+        console.error("Error fetching recipes:", err);
       } finally {
         setLoading(false);
       }
@@ -60,75 +60,91 @@ export default function Home() {
     return list;
   };
 
-  // 🟢 Function باش نضيف ingredients ونظهر message
   const handleAddListe = (meal) => {
     const ingredients = extractIngredients(meal);
     dispatch(addIngredients(ingredients));
-    setMsg("✅ Les ingrédients ont été ajoutés à la liste de courses !");
-    setTimeout(() => setMsg(""), 3000); // message يختفي بعد 3 ثواني
+    setMsg("✅ Ingredients added to shopping list!");
+    setTimeout(() => setMsg(""), 3000);
+  };
+
+  const scrollToRecipes = () => {
+    const recipesSection = document.querySelector(".grid");
+    if (recipesSection) {
+      recipesSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <div className="home">
-      <Navbar search={search} setSearch={setSearch} />
-
-      {/* 🟢 Message Notification */}
       {msg && <div className="notification">{msg}</div>}
 
-
-      <div className="hero">
-        <h1>Bienvenue chez Taste Trip</h1>
-        <p>Découvrez des recettes gourmandes et faciles</p>
+      <div className="hero-cinema">
+        <video className="hero-video" autoPlay muted loop playsInline>
+          <source src={foodVideo} type="video/mp4" />
+        </video>
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <h1 className="hero-title">Test <span>Trip</span></h1>
+          <p className="hero-sub">
+            Discover recipes from around the world<br />
+            Easy, tasty, and unforgettable
+          </p>
+          <div className="hero-actions">
+            <button className="hero-btn main" onClick={scrollToRecipes}>
+              Explore 🍳
+            </button>
+          </div>
+        </div>
       </div>
 
       {loading ? (
-        <h2 style={{ textAlign: "center", marginTop: "50px" }}>
-          Chargement des recettes...
-        </h2>
+        <div className="loader-container">
+          <div className="loader"></div>
+          <p>Loading recipes...</p>
+        </div>
       ) : (
         <div className="grid">
           {filteredRecipes.length > 0 ? (
-            filteredRecipes.map(e => (
-              <div key={e.idMeal} className="card">
-
-                {/* ❤️ Favorite */}
-                <div
-                  className="heart-icon"
-                  onClick={() => {
-                    isFav(e.idMeal)
-                      ? dispatch(removeFavorite(e.idMeal))
-                      : dispatch(addFavorite(e));
-                  }}
-                >
-                  <FaHeart
-                    size={22}
-                    color={isFav(e.idMeal) ? "#f06292" : "#ccc"}
+            filteredRecipes.map(e => {
+              const isPurchased = purchasedMeals.includes(e.idMeal);
+              return (
+                <div key={e.idMeal} className="card">
+                  <img
+                    src={e.strMealThumb}
+                    alt={e.strMeal}
+                    style={{ cursor: "pointer", borderRadius: "8px" }}
+                    onClick={() => navigate(`/meal/${e.idMeal}`)}
                   />
+                  <h3>{e.strMeal}</h3>
+
+                  {/* BUTTON + HEART + PREMIUM */}
+                  <div className="btn-heart-container">
+                    <button className="btn-main" onClick={() => handleAddListe(e)}>
+                      Add to List 🛒
+                    </button>
+
+                    <FaHeart
+                      size={24}
+                      className={`favorite-icon ${isFav(e.idMeal) ? "fav" : ""}`}
+                      onClick={() => {
+                        if (isFav(e.idMeal)) {
+                          dispatch(removeFavorite(e.idMeal));
+                        } else {
+                          dispatch(addFavorite(e));
+                        }
+                      }}
+                    />
+
+                   
+                  </div>
+                   {!isPurchased && (
+                      <p className="premium-text">🔒 Premium</p>
+                    )}
                 </div>
-
-                {/* الصورة للتفاصيل */}
-                <img
-                  src={e.strMealThumb}
-                  alt={e.strMeal}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigate(`/meal/${e.idMeal}`)}
-                />
-                <h3>{e.strMeal}</h3>
-
-                {/* 🟢 Add Liste Button */}
-                <button
-                  className="btn-main"
-                  onClick={() => handleAddListe(e)}
-                >
-                  Add Liste 🛒
-                </button>
-
-              </div>
-            ))
+              );
+            })
           ) : (
-            <p style={{ textAlign: "center", gridColumn: "1/-1" }}>
-              Aucune recette trouvée.
-            </p>
+            <p style={{ textAlign: "center", gridColumn: "1/-1" }}>No recipes found.</p>
           )}
         </div>
       )}
