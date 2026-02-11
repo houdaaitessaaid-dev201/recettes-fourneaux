@@ -1,3 +1,4 @@
+// App.js
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -6,6 +7,7 @@ import Detail from "./components/Detail";
 import Favorites from "./components/Favorites";
 import ListeCourses from "./components/ListeCourses";
 import Contact from "./components/Contact";
+import NotFound from "./components/NotFound"; // ✅ Nouvelle page 404
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -23,6 +25,9 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/listecourses" element={<ListeCourses />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* Route catch-all pour 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
