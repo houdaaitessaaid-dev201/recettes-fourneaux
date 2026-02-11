@@ -11,6 +11,7 @@ export default function Navbar({ search, setSearch }) {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/listecourses">Liste Courses</Link></li>
         <li><Link to="/favorites">Favorites</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
       </ul>
 
       <div className="nav-actions">
